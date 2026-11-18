@@ -24,9 +24,11 @@
         <span class="brand-mark" aria-hidden="true">o</span>
         <span>openroad<span class="brand-period">.</span></span>
       </a>
+      <a class="mobile-bodywork-link" href="#bodywork">Bodywork</a>
       <nav class="main-nav" aria-label="Main navigation">
         <a class="nav-link active" href="#inventory">Find a car</a>
         <button class="nav-link" id="sell-nav" type="button">Sell your car</button>
+        <a class="nav-link" href="#bodywork">Bodywork</a>
         <a class="nav-link" href="#how-it-works">How it works</a>
       </nav>
       <div class="header-actions">
@@ -150,6 +152,103 @@
           <span class="banner-tag">MADE FOR<br />THE NEXT<br />MILE →</span>
         </div>
         <div class="seller-banner-number" aria-hidden="true">02</div>
+      </section>
+
+      <section class="bodywork-section" id="bodywork">
+        <div class="bodywork-heading">
+          <div>
+            <span class="eyebrow">A little TLC goes a long way</span>
+            <h2>Get back to<br /><span>looking like you.</span></h2>
+          </div>
+          <p>Tell us what happened. Get a quick preliminary estimate, then let our customer care team help you figure out the next step.</p>
+        </div>
+        <div class="bodywork-layout">
+          <form class="bodywork-form" id="bodywork-form">
+            <div class="bodywork-form-heading">
+              <span class="bodywork-step">01 / YOUR CAR</span>
+              <h3>Start with the details.</h3>
+            </div>
+            <div class="form-grid">
+              <label class="form-field">Year
+                <input name="year" type="number" min="1900" max="2099" placeholder="2021" required />
+              </label>
+              <label class="form-field">Make
+                <input name="make" placeholder="Toyota" required maxlength="40" />
+              </label>
+              <label class="form-field">Model
+                <input name="model" placeholder="RAV4" required maxlength="50" />
+              </label>
+              <label class="form-field">Type of work
+                <select name="repairType" required>
+                  <option value="paint">Scratch or paint repair</option>
+                  <option value="dent">Dent or panel repair</option>
+                  <option value="bumper">Bumper repair</option>
+                  <option value="glass">Glass or light repair</option>
+                  <option value="other">Something else / not sure</option>
+                </select>
+              </label>
+              <label class="form-field form-full">How extensive is the damage?
+                <select name="extent" required>
+                  <option value="small">Small — one spot or minor damage</option>
+                  <option value="medium">Medium — a larger area or a few spots</option>
+                  <option value="large">Large — multiple panels or significant damage</option>
+                </select>
+              </label>
+              <label class="form-field form-full">What needs fixing?
+                <textarea name="description" rows="4" placeholder="Tell us where the damage is, how it happened, and anything else that might help." required maxlength="1000"></textarea>
+              </label>
+              <label class="form-field form-full">Photos <span class="optional-label">optional · up to 3 photos, JPG, PNG, or WebP, 500 KB each</span>
+                <span class="upload-area">
+                  <input id="bodywork-photos" name="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple />
+                  <span class="upload-icon" aria-hidden="true">↑</span>
+                  <span><strong>Choose photos</strong> to show us the damage</span>
+                  <span class="upload-hint">A few clear angles can help us understand the repair.</span>
+                </span>
+              </label>
+              <div class="photo-previews form-full" id="bodywork-photo-previews" aria-live="polite"></div>
+            </div>
+            <div class="bodywork-form-heading contact-heading">
+              <span class="bodywork-step">02 / GET IN TOUCH</span>
+              <h3>How can we reach you?</h3>
+            </div>
+            <div class="form-grid">
+              <label class="form-field">Your name
+                <input name="name" autocomplete="name" placeholder="Jamie Parker" required maxlength="80" />
+              </label>
+              <label class="form-field">Email address
+                <input name="email" type="email" autocomplete="email" placeholder="you@example.com" required maxlength="120" />
+              </label>
+              <label class="form-field">Phone <span class="optional-label">optional</span>
+                <input name="phone" type="tel" autocomplete="tel" placeholder="(555) 123-4567" maxlength="30" />
+              </label>
+              <label class="form-field">Best way to reach you
+                <select name="contactPreference">
+                  <option value="email">Email</option>
+                  <option value="phone">Phone</option>
+                </select>
+              </label>
+            </div>
+            <p class="demo-notice">This prototype creates an estimate in your browser only. No repair request or photos are sent, and a representative won't be notified.</p>
+            <p class="form-error" id="bodywork-error" role="alert"></p>
+            <button class="button button-accent dialog-submit" type="submit">Get my estimate <span aria-hidden="true">→</span></button>
+          </form>
+          <aside class="estimate-card" aria-labelledby="estimate-title">
+            <span class="bodywork-step">YOUR PRELIMINARY ESTIMATE</span>
+            <div class="estimate-icon" aria-hidden="true">✳</div>
+            <h3 id="estimate-title">A clearer road ahead.</h3>
+            <p>Share a few details to see an estimated range for your repair. We’ll use your description and photos to help guide a follow-up.</p>
+            <div class="estimate-range" id="bodywork-estimate" aria-live="polite">
+              <span>Estimated range</span>
+              <strong>— —</strong>
+              <small>Complete the form to get your estimate.</small>
+            </div>
+            <p class="estimate-disclaimer">Planning estimate only. Final pricing depends on an in-person inspection, parts, paint matching, and the full extent of the damage.</p>
+            <div class="estimate-next-step">
+              <span aria-hidden="true">↗</span>
+              <p><strong>What happens next?</strong><br />A customer care representative can review the request and help arrange the next step.</p>
+            </div>
+          </aside>
+        </div>
       </section>
 
       <section class="how-section" id="how-it-works">

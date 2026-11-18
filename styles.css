@@ -27,6 +27,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .brand { display: inline-flex; align-items: center; gap: 9px; font: 800 21px var(--display); letter-spacing: -1.2px; white-space: nowrap; }
 .brand-mark { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: var(--lime); font: 700 24px var(--serif); line-height: 1; transform: rotate(-15deg); }
 .brand-period { color: var(--orange); }
+.mobile-bodywork-link { display: none; }
 .main-nav { display: flex; align-items: center; gap: clamp(20px, 3.4vw, 52px); margin-left: 5%; }
 .nav-link { padding: 8px 0; color: #656861; font-size: 13px; border: 0; background: transparent; cursor: pointer; }
 .nav-link:hover, .nav-link.active { color: var(--ink); }
@@ -129,6 +130,39 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .banner-tag { position: absolute; z-index: 2; right: 9%; bottom: 11%; color: var(--lime); font: 700 14px/1.35 var(--display); letter-spacing: 1px; transform: rotate(-7deg); }
 .seller-banner-number { position: absolute; bottom: -30px; left: 49%; color: rgba(255,255,255,.07); font: 800 180px/.9 var(--display); pointer-events: none; }
 
+.bodywork-section { padding: 88px 7.1% 96px; background: #eeede7; }
+.bodywork-heading { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 30px; }
+.bodywork-heading h2 { margin: 12px 0 0; font: 600 clamp(38px, 4.4vw, 58px)/1.04 var(--display); letter-spacing: -3px; }
+.bodywork-heading h2 span { color: #7e9a5c; font-family: var(--serif); font-style: italic; font-weight: 400; }
+.bodywork-heading > p { max-width: 380px; margin: 0 0 5px; color: #6a6d66; font-size: 13px; line-height: 1.8; }
+.bodywork-layout { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(260px, .75fr); align-items: start; gap: 22px; }
+.bodywork-form { padding: 30px; background: var(--white); box-shadow: 0 12px 35px rgba(34,39,33,.05); }
+.bodywork-form-heading { margin-bottom: 18px; }
+.bodywork-form-heading h3, .estimate-card h3 { margin: 7px 0 0; font: 700 20px var(--display); letter-spacing: -.5px; }
+.bodywork-step { color: #83867e; font-size: 9px; font-weight: 700; letter-spacing: 1.1px; }
+.bodywork-form .form-grid { gap: 16px 13px; }
+.bodywork-form .form-grid .form-field + .form-field { margin-top: 0; }
+.bodywork-form .form-field > input, .bodywork-form .form-field textarea, .bodywork-form .form-field select { width: 100%; min-height: 43px; padding: 11px 12px; border: 1px solid #dedfd8; border-radius: 2px; color: var(--ink); background: var(--white); font-size: 12px; font-weight: 400; }
+.bodywork-form .form-field textarea { resize: vertical; }
+.bodywork-form .form-field input::placeholder, .bodywork-form .form-field textarea::placeholder { color: #a4a69e; }
+.bodywork-form .upload-area input { width: 1px; min-height: 0; padding: 0; border: 0; }
+.contact-heading { margin-top: 31px; padding-top: 25px; border-top: 1px solid #e8e8e2; }
+.bodywork-form .demo-notice { margin-top: 22px; }
+.estimate-card { position: sticky; top: 24px; padding: 29px 27px 25px; color: white; background: var(--green); }
+.estimate-card .bodywork-step { color: #c4cfbd; }
+.estimate-icon { width: 42px; height: 42px; display: grid; place-items: center; margin-top: 28px; border-radius: 50%; color: var(--green); background: var(--lime); font-size: 19px; }
+.estimate-card h3 { margin-top: 16px; font-size: 23px; }
+.estimate-card > p { color: #d3dbd1; font-size: 11px; line-height: 1.8; }
+.estimate-range { display: flex; flex-direction: column; gap: 5px; margin-top: 23px; padding: 17px; color: var(--ink); background: var(--lime); }
+.estimate-range > span { font-size: 9px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; }
+.estimate-range strong { font: 800 27px var(--display); letter-spacing: -1px; }
+.estimate-range small { color: #535a48; font-size: 9px; line-height: 1.5; }
+.estimate-disclaimer { margin: 12px 0 0; font-size: 9px !important; }
+.estimate-next-step { display: flex; gap: 11px; margin-top: 25px; padding-top: 19px; border-top: 1px solid rgba(255,255,255,.19); }
+.estimate-next-step > span { color: var(--lime); font-size: 18px; }
+.estimate-next-step p { margin: 0; color: #d3dbd1; font-size: 10px; line-height: 1.7; }
+.estimate-next-step strong { color: white; }
+
 .how-section { padding: 94px 7.1% 100px; display: grid; grid-template-columns: .85fr 1.6fr; gap: 8%; }
 .how-heading h2 { margin: 17px 0; font: 600 clamp(38px, 4.4vw, 59px)/1.05 var(--display); letter-spacing: -3px; }
 .how-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; padding-top: 7px; }
@@ -189,7 +223,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .toast.is-visible { opacity: 1; transform: translateY(0); }
 
 @media (min-width: 1500px) {
-  .site-header, .hero, .search-section, .inventory-section, .how-section, .site-footer { padding-right: max(7.1%, calc((100% - 1300px)/2)); padding-left: max(7.1%, calc((100% - 1300px)/2)); }
+  .site-header, .hero, .search-section, .inventory-section, .bodywork-section, .how-section, .site-footer { padding-right: max(7.1%, calc((100% - 1300px)/2)); padding-left: max(7.1%, calc((100% - 1300px)/2)); }
 }
 @media (max-width: 900px) {
   .site-header { padding: 0 5%; }
@@ -208,14 +242,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .how-section { grid-template-columns: 1fr; gap: 30px; }
   .how-heading h2 br { display: none; }
   .seller-banner-copy { padding-left: 10%; }
+  .bodywork-section { padding-right: 5%; padding-left: 5%; }
+  .bodywork-layout { grid-template-columns: minmax(0, 1.2fr) minmax(230px, .8fr); gap: 15px; }
+  .bodywork-form { padding: 25px 20px; }
+  .estimate-card { padding: 25px 20px; }
 }
 @media (max-width: 620px) {
-  .site-header { height: 67px; padding: 0 5%; }
+  .site-header { height: 67px; padding: 0 5%; gap: 8px; }
   .brand { font-size: 19px; }
   .main-nav, .header-sell { display: none; }
+  .mobile-bodywork-link { display: block; color: var(--green); font-size: 10px; font-weight: 700; white-space: nowrap; }
   .header-actions { margin-left: auto; }
   .account-button { font-size: 11px; }
-  .menu-button { display: block; margin-left: 8px; }
+  .menu-button { display: block; width: 27px; flex: 0 0 27px; margin-left: 0; padding: 0; font-size: 22px; }
   .hero { display: flex; flex-direction: column; gap: 30px; padding: 45px 5% 55px; }
   .hero h1 { margin-top: 18px; font-size: clamp(52px, 14vw, 74px); letter-spacing: -4px; }
   .hero-copy > p { max-width: 350px; font-size: 13px; }
@@ -262,4 +301,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .dialog-card, .listing-card { padding: 35px 22px 25px; }
   .form-grid { gap: 13px 9px; }
   .detail-image { height: 190px; }
+  .bodywork-section { padding: 57px 5% 65px; }
+  .bodywork-heading { align-items: start; flex-direction: column; gap: 12px; }
+  .bodywork-heading h2 { font-size: 43px; }
+  .bodywork-layout { grid-template-columns: 1fr; }
+  .bodywork-form { padding: 25px 18px; }
+  .estimate-card { position: static; }
+}
+@media (max-width: 400px) {
+  .account-button #account-label { display: none; }
+}
+@media (max-width: 360px) {
+  .brand > span:last-child { display: none; }
 }

@@ -110,10 +110,19 @@ const STORAGE_KEYS = {
   listings: "openroad-demo-listings",
   favorites: "openroad-demo-favorites",
   inquiries: "openroad-demo-inquiries",
+  bodyworkRequests: "openroad-demo-bodywork-requests",
 };
 const MAX_PHOTOS = 3;
 const MAX_PHOTO_BYTES = 500 * 1024;
+const BODYWORK_RATES = {
+  paint: [180, 450],
+  dent: [250, 850],
+  bumper: [400, 1200],
+  glass: [200, 900],
+  other: [150, 1000],
+};
 let selectedPhotos = [];
+let selectedBodyworkPhotos = [];
 let activeCar = null;
 let toastTimer;
 
@@ -330,6 +339,24 @@ function updatePhotoPreviews() {
   ).join("");
 }
 
+function updateBodyworkPhotoPreviews() {
+  const previews = document.querySelector("#bodywork-photo-previews");
+  previews.innerHTML = selectedBodyworkPhotos.map((photo, index) =>
+    `<span class="preview-wrap"><img src="${photo.data}" alt="Selected damage photo ${index + 1}" /><button class="preview-remove" type="button" data-remove-bodywork-photo="${index}" aria-label="Remove damage photo ${index + 1}">×</button></span>`
+  ).join("");
+}
+
+function renderBodyworkEstimate(repairType, extent) {
+  const rates = BODYWORK_RATES[repairType];
+  const multipliers = { small: 1, medium: 1.6, large: 2.4 };
+  if (!rates || !multipliers[extent]) return;
+  const minimum = Math.round(rates[0] * multipliers[extent] / 10) * 10;
+  const maximum = Math.round(rates[1] * multipliers[extent] / 10) * 10;
+  const estimate = document.querySelector("#bodywork-estimate");
+  estimate.innerHTML = `<span>Estimated range</span><strong>${formatPrice(minimum)} – ${formatPrice(maximum)}</strong><small>Preliminary estimate · subject to inspection</small>`;
+  return { minimum, maximum };
+}
+
 document.querySelector("#search-form").addEventListener("submit", (event) => {
   event.preventDefault();
   renderCars();
@@ -393,6 +420,116 @@ document.querySelector("#car-grid").addEventListener("click", (event) => {
 
 document.querySelectorAll("#sell-nav, #sell-header, #mobile-sell, #sell-banner").forEach((button) => {
   button.addEventListener("click", openListing);
+});
+
+const bodyworkForm = document.querySelector("#bodywork-form");
+bodyworkForm.elements.repairType.addEventListener("change", () => {
+  renderBodyworkEstimate(bodyworkForm.elements.repairType.value, bodyworkForm.elements.extent.value);
+});
+bodyworkForm.elements.extent.addEventListener("change", () => {
+  renderBodyworkEstimate(bodyworkForm.elements.repairType.value, bodyworkForm.elements.extent.value);
+});
+bodyworkForm.elements.contactPreference.addEventListener("change", () => {
+  bodyworkForm.elements.phone.required = bodyworkForm.elements.contactPreference.value === "phone";
+});
+
+document.querySelector("#bodywork-photos").addEventListener("change", async (event) => {
+  const input = event.currentTarget;
+  const files = [...input.files];
+  const error = document.querySelector("#bodywork-error");
+  error.textContent = "";
+  if (files.length + selectedBodyworkPhotos.length > MAX_PHOTOS) {
+    error.textContent = `Choose up to ${MAX_PHOTOS} photos total.`;
+    input.value = "";
+    return;
+  }
+  if (files.some((file) => !["image/jpeg", "image/png", "image/webp"].includes(file.type))) {
+    error.textContent = "Use JPG, PNG, or WebP photos.";
+    input.value = "";
+    return;
+  }
+  if (files.some((file) => file.size > MAX_PHOTO_BYTES)) {
+    error.textContent = "Each photo must be 500 KB or smaller.";
+    input.value = "";
+    return;
+  }
+  try {
+    const loaded = await Promise.all(files.map((file) => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve({ name: file.name, data: reader.result });
+      reader.onerror = () => reject(new Error(`Unable to read ${file.name}.`));
+      reader.readAsDataURL(file);
+    })));
+    selectedBodyworkPhotos = [...selectedBodyworkPhotos, ...loaded];
+    updateBodyworkPhotoPreviews();
+  } catch (readError) {
+    console.error("Unable to read a bodywork photo.", readError);
+    error.textContent = "A photo couldn't be read. Please choose another file.";
+  }
+  input.value = "";
+});
+
+document.querySelector("#bodywork-photo-previews").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-remove-bodywork-photo]");
+  if (!button) return;
+  selectedBodyworkPhotos.splice(Number(button.dataset.removeBodyworkPhoto), 1);
+  updateBodyworkPhotoPreviews();
+});
+
+bodyworkForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const error = document.querySelector("#bodywork-error");
+  error.textContent = "";
+  const data = new FormData(bodyworkForm);
+  const year = Number(data.get("year"));
+  const currentYear = new Date().getFullYear() + 1;
+  if (!Number.isInteger(year) || year < 1900 || year > currentYear) {
+    error.textContent = `Enter a year between 1900 and ${currentYear}.`;
+    return;
+  }
+  const contactPreference = String(data.get("contactPreference"));
+  const phone = String(data.get("phone")).trim();
+  if (contactPreference === "phone" && !phone) {
+    error.textContent = "Add a phone number so a representative can reach you that way.";
+    bodyworkForm.elements.phone.focus();
+    return;
+  }
+  const range = renderBodyworkEstimate(String(data.get("repairType")), String(data.get("extent")));
+  if (!range) {
+    error.textContent = "Choose a repair type and damage size to get an estimate.";
+    return;
+  }
+  const request = {
+    vehicle: {
+      year,
+      make: String(data.get("make")).trim(),
+      model: String(data.get("model")).trim(),
+    },
+    repairType: String(data.get("repairType")),
+    extent: String(data.get("extent")),
+    description: String(data.get("description")).trim(),
+    photos: selectedBodyworkPhotos.map((photo) => photo.data),
+    contact: {
+      name: String(data.get("name")).trim(),
+      email: String(data.get("email")).trim().toLowerCase(),
+      phone,
+      preference: contactPreference,
+    },
+    estimate: range,
+    createdAt: new Date().toISOString(),
+  };
+  const requests = readStorage(STORAGE_KEYS.bodyworkRequests, []);
+  const nextRequests = Array.isArray(requests) ? requests : [];
+  nextRequests.push(request);
+  if (!saveStorage(STORAGE_KEYS.bodyworkRequests, nextRequests)) {
+    error.textContent = "Your request couldn't be saved in this browser. Try removing photos or using smaller images.";
+    return;
+  }
+  bodyworkForm.reset();
+  bodyworkForm.elements.phone.required = false;
+  selectedBodyworkPhotos = [];
+  updateBodyworkPhotoPreviews();
+  showToast(`Your preliminary estimate is ${formatPrice(range.minimum)}–${formatPrice(range.maximum)}. Demo request saved in this browser only.`);
 });
 
 document.querySelector("#account-button").addEventListener("click", () => accountDialog.showModal());
