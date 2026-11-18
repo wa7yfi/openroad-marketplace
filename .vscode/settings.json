@@ -1,0 +1,9 @@
+{
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": true
+  },
+  "chat.commandCenter.enabled": true,
+  "editor.inlineSuggest.enabled": true
+}

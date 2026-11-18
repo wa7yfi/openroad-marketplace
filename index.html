@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f4f0" />
+    <meta
+      name="description"
+      content="Find your next car or list your own on OpenRoad, a friendlier way to buy and sell."
+    />
+    <title>OpenRoad — Find your next car</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="OpenRoad home">
+        <span class="brand-mark" aria-hidden="true">o</span>
+        <span>openroad<span class="brand-period">.</span></span>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="nav-link active" href="#inventory">Find a car</a>
+        <button class="nav-link" id="sell-nav" type="button">Sell your car</button>
+        <a class="nav-link" href="#how-it-works">How it works</a>
+      </nav>
+      <div class="header-actions">
+        <button class="account-button" id="account-button" type="button">
+          <span class="user-icon" aria-hidden="true">↗</span>
+          <span id="account-label">Sign in</span>
+        </button>
+        <button class="button button-dark header-sell" id="sell-header" type="button">List your car <span aria-hidden="true">↗</span></button>
+      </div>
+      <button class="menu-button" id="mobile-sell" type="button" aria-label="List your car">＋</button>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="eyebrow-line"></span> A better way to get there</div>
+          <h1>Good cars.<br />Good people.<br /><span>Great journeys.</span></h1>
+          <p>Find a car that feels like you. Buy and sell directly with people, with a little more confidence and a lot less hassle.</p>
+          <a class="button button-dark hero-button" href="#inventory">Explore cars <span aria-hidden="true">↓</span></a>
+          <div class="hero-proof">
+            <div class="avatar-stack" aria-hidden="true">
+              <span>J</span><span>M</span><span>A</span><span>+</span>
+            </div>
+            <p><strong>Good company on the road.</strong><br />A community of real car people.</p>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <img
+            src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1400&q=85"
+            alt="A classic sports car parked on a quiet road"
+          />
+          <div class="hero-image-shade"></div>
+          <div class="hero-image-note"><span class="note-dot"></span> Your next chapter starts here</div>
+          <div class="hero-stat"><strong>2,400+</strong><span>good drives<br />and counting</span></div>
+          <span class="hero-sticker" aria-hidden="true">TAKE<br />THE<br />SCENIC<br />ROUTE</span>
+        </div>
+        <div class="hero-index" aria-hidden="true">01 / 03</div>
+      </section>
+
+      <section class="search-section" aria-label="Search cars">
+        <div class="search-heading">
+          <span class="eyebrow">The fun part</span>
+          <h2>Find your kind of car.</h2>
+        </div>
+        <form class="search-panel" id="search-form">
+          <label class="search-field">
+            <span>Make</span>
+            <select id="make-filter">
+              <option value="">All makes</option>
+            </select>
+          </label>
+          <label class="search-field">
+            <span>Model</span>
+            <select id="model-filter">
+              <option value="">All models</option>
+            </select>
+          </label>
+          <label class="search-field">
+            <span>Year</span>
+            <select id="year-filter">
+              <option value="">Any year</option>
+            </select>
+          </label>
+          <label class="search-field search-price">
+            <span>Max price</span>
+            <select id="price-filter">
+              <option value="">No max</option>
+              <option value="15000">$15,000</option>
+              <option value="25000">$25,000</option>
+              <option value="35000">$35,000</option>
+              <option value="50000">$50,000</option>
+              <option value="75000">$75,000</option>
+            </select>
+          </label>
+          <button class="button button-accent search-submit" type="submit"><span aria-hidden="true">⌕</span> Find cars</button>
+        </form>
+      </section>
+
+      <section class="inventory-section" id="inventory">
+        <div class="section-top">
+          <div>
+            <span class="eyebrow">Out there, waiting</span>
+            <h2>Cars with a story.</h2>
+          </div>
+          <div class="inventory-tools">
+            <span class="result-count" id="result-count" aria-live="polite"></span>
+            <label class="sort-control">Sort by
+              <select id="sort-filter" aria-label="Sort cars">
+                <option value="featured">Featured</option>
+                <option value="price-low">Price: low to high</option>
+                <option value="price-high">Price: high to low</option>
+                <option value="year-new">Year: newest</option>
+                <option value="mileage-low">Lowest mileage</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div class="active-filters" id="active-filters"></div>
+        <div class="car-grid" id="car-grid" aria-live="polite"></div>
+        <div class="empty-state" id="empty-state" hidden>
+          <span class="empty-icon" aria-hidden="true">⌕</span>
+          <h3>No cars around that corner.</h3>
+          <p>Try changing a filter, or clear them to see everything.</p>
+          <button class="button button-outline" id="clear-filters" type="button">Clear filters</button>
+        </div>
+        <div class="inventory-bottom">
+          <span>Good things take a little looking.</span>
+          <button class="text-button" id="show-all" type="button">See all cars <span aria-hidden="true">→</span></button>
+        </div>
+      </section>
+
+      <section class="seller-banner">
+        <div class="seller-banner-copy">
+          <span class="eyebrow eyebrow-light">Ready for your next chapter?</span>
+          <h2>Your car has more<br />stories to tell.</h2>
+          <p>Give it a great next home. Create a listing in minutes and connect with people who get it.</p>
+          <button class="button button-light" id="sell-banner" type="button">Sell your car <span aria-hidden="true">↗</span></button>
+        </div>
+        <div class="seller-banner-art">
+          <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1100&q=85" alt="A polished sports car ready for a new owner" />
+          <span class="banner-tag">MADE FOR<br />THE NEXT<br />MILE →</span>
+        </div>
+        <div class="seller-banner-number" aria-hidden="true">02</div>
+      </section>
+
+      <section class="how-section" id="how-it-works">
+        <div class="how-heading">
+          <span class="eyebrow">No funny business</span>
+          <h2>Better from<br /><span>hello to keys.</span></h2>
+        </div>
+        <div class="how-steps">
+          <article class="how-step">
+            <span class="step-number">01</span>
+            <span class="step-icon" aria-hidden="true">⌕</span>
+            <h3>Find your fit</h3>
+            <p>Browse real listings from owners. Filter by what matters to you, and save the ones you love.</p>
+          </article>
+          <article class="how-step">
+            <span class="step-number">02</span>
+            <span class="step-icon" aria-hidden="true">↗</span>
+            <h3>Talk it through</h3>
+            <p>Ask questions, get the details, and meet the person behind the wheel. No pressure, just people.</p>
+          </article>
+          <article class="how-step">
+            <span class="step-number">03</span>
+            <span class="step-icon" aria-hidden="true">✳</span>
+            <h3>Make it yours</h3>
+            <p>When it feels right, work out the details together. Your next great drive is just getting started.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand footer-brand" href="#"><span class="brand-mark" aria-hidden="true">o</span><span>openroad<span class="brand-period">.</span></span></a>
+      <p>Good cars find good people.</p>
+      <span>Made for the love of the drive <span class="footer-heart">♥</span></span>
+    </footer>
+
+    <dialog class="dialog" id="account-dialog" aria-labelledby="account-title">
+      <form class="dialog-card" id="account-form">
+        <button class="dialog-close" type="button" data-close="account-dialog" aria-label="Close">×</button>
+        <span class="eyebrow">Your corner of OpenRoad</span>
+        <h2 id="account-title">Come on in.</h2>
+        <p class="dialog-intro">Create your free demo account to save cars and list one of your own.</p>
+        <label class="form-field">Your name
+          <input id="account-name" name="name" autocomplete="name" placeholder="Jamie Parker" required maxlength="80" />
+        </label>
+        <label class="form-field">Email address
+          <input id="account-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required maxlength="120" />
+        </label>
+        <p class="demo-notice">This is a front-end demo. Your profile is saved only in this browser; no password or payment details are collected.</p>
+        <p class="form-error" id="account-error" role="alert"></p>
+        <button class="button button-accent dialog-submit" type="submit">Create my account <span aria-hidden="true">→</span></button>
+      </form>
+    </dialog>
+
+    <dialog class="dialog" id="listing-dialog" aria-labelledby="listing-title">
+      <form class="dialog-card listing-card" id="listing-form">
+        <button class="dialog-close" type="button" data-close="listing-dialog" aria-label="Close">×</button>
+        <span class="eyebrow">A great new home awaits</span>
+        <h2 id="listing-title">Tell us about your car.</h2>
+        <p class="dialog-intro">A few details and some good photos are all it takes to get started.</p>
+        <div class="form-grid">
+          <label class="form-field">Year
+            <input name="year" type="number" min="1900" max="2099" placeholder="2021" required />
+          </label>
+          <label class="form-field">Make
+            <input name="make" placeholder="Toyota" required maxlength="40" />
+          </label>
+          <label class="form-field">Model
+            <input name="model" placeholder="RAV4" required maxlength="50" />
+          </label>
+          <label class="form-field">Asking price
+            <span class="input-prefix"><span>$</span><input name="price" type="number" min="1" step="1" placeholder="24,500" required /></span>
+          </label>
+          <label class="form-field">Mileage
+            <input name="mileage" type="number" min="0" step="1" placeholder="32,000" required />
+          </label>
+          <label class="form-field">Location
+            <input name="location" placeholder="Portland, OR" required maxlength="80" />
+          </label>
+          <label class="form-field form-full">A little more about it
+            <textarea name="description" rows="3" placeholder="What makes this car special? Share its history, condition, or your favorite detail." maxlength="800"></textarea>
+          </label>
+          <label class="form-field form-full">Photos <span class="optional-label">up to 3, JPG, PNG, or WebP, 500 KB each</span>
+            <span class="upload-area">
+              <input id="listing-photos" name="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple />
+              <span class="upload-icon" aria-hidden="true">↑</span>
+              <span><strong>Choose photos</strong> to add them to your listing</span>
+              <span class="upload-hint">Clear photos help your car find its person.</span>
+            </span>
+          </label>
+          <div class="photo-previews form-full" id="photo-previews" aria-live="polite"></div>
+        </div>
+        <p class="form-error" id="listing-error" role="alert"></p>
+        <button class="button button-accent dialog-submit" type="submit">Publish my listing <span aria-hidden="true">→</span></button>
+      </form>
+    </dialog>
+
+    <dialog class="dialog" id="car-dialog" aria-labelledby="car-dialog-title">
+      <div class="dialog-card car-detail-card">
+        <button class="dialog-close" type="button" data-close="car-dialog" aria-label="Close">×</button>
+        <img class="detail-image" id="detail-image" alt="" />
+        <span class="eyebrow" id="detail-meta"></span>
+        <h2 id="car-dialog-title"></h2>
+        <div class="detail-price" id="detail-price"></div>
+        <p class="detail-description" id="detail-description"></p>
+        <div class="detail-specs" id="detail-specs"></div>
+        <p class="demo-notice">Interested? This sample site doesn't process purchases. Contact the seller directly to arrange a viewing.</p>
+        <button class="button button-accent dialog-submit" id="contact-seller" type="button">I'm interested <span aria-hidden="true">→</span></button>
+      </div>
+    </dialog>
+    <dialog class="dialog" id="inquiry-dialog" aria-labelledby="inquiry-title">
+      <form class="dialog-card" id="inquiry-form">
+        <button class="dialog-close" type="button" data-close="inquiry-dialog" aria-label="Close">×</button>
+        <span class="eyebrow">Start a conversation</span>
+        <h2 id="inquiry-title">This one caught your eye.</h2>
+        <p class="dialog-intro" id="inquiry-car-name"></p>
+        <label class="form-field">Your name
+          <input id="inquiry-name" name="name" autocomplete="name" placeholder="Jamie Parker" required maxlength="80" />
+        </label>
+        <label class="form-field">Email address
+          <input id="inquiry-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required maxlength="120" />
+        </label>
+        <label class="form-field">Message to the seller
+          <textarea id="inquiry-message" name="message" rows="3" maxlength="800" required>I’m interested in your car. Is it still available?</textarea>
+        </label>
+        <p class="demo-notice">Demo only: this inquiry is saved in this browser and is not sent to the seller.</p>
+        <p class="form-error" id="inquiry-error" role="alert"></p>
+        <button class="button button-accent dialog-submit" type="submit">Save demo inquiry <span aria-hidden="true">→</span></button>
+      </form>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
